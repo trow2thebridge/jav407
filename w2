@@ -1,3 +1,138 @@
+game
+
+package guessingGame;
+
+import java.util.Random;
+
+public class Game {
+    private int number;          // Random number between 1 and 100
+    private int guessNumber;     // User's guess
+    private int counter;         // Total number of guesses made so far
+
+    // Constructor
+    public Game() {
+        this.counter = 0;        // Initialize counter to 0
+    }
+
+    // Method to generate a random number between 1 and 100
+    public void generateNumberToBeGuessed() {
+        Random random = new Random();
+        this.number = random.nextInt(100) + 1; // Generates a number between 1 and 100
+        this.counter = 0; // Reset the counter for a new game
+    }
+
+    // Method to make a guess
+    public void makeGuess(int guessNumber) {
+        this.guessNumber = guessNumber;
+        this.counter++;
+    }
+
+    // Method to check if the guess is correct
+    public boolean isCorrectGuess() {
+        return this.guessNumber == this.number;
+    }
+
+    // Method to display a welcome message
+    public void displayWelcomeMessage() {
+        System.out.println("Welcome to the Guessing Game!");
+    }
+
+    // Method to ask the user to guess a number
+    public void displayPleaseGuessMessage() {
+        System.out.println("Please guess a number between 1 and 100:");
+    }
+
+    // Method to display a correct guess message
+    public void displayCorrectGuessMessage() {
+        System.out.println("Congratulations! You've guessed the correct number.");
+        if (counter <= 3) {
+            System.out.println("Great work! You are a mathematical wizard.");
+        } else if (counter <= 7) {
+            System.out.println("Not too bad! You've got some potential.");
+        } else {
+            System.out.println("What took you so long?");
+        }
+    }
+
+    // Method to prompt the user to guess again
+    public void displayGuessAgainMessage() {
+        if (this.guessNumber > this.number + 10) {
+            System.out.println("Way too high! Guess again.");
+        } else if (this.guessNumber > this.number) {
+            System.out.println("Too high! Guess again.");
+        } else if (this.guessNumber < this.number - 10) {
+            System.out.println("Way too low! Guess again.");
+        } else if (this.guessNumber < this.number) {
+            System.out.println("Too low! Guess again.");
+        }
+    }
+}
+
+
+
+gussinggame 
+
+package guessingGame;
+
+import java.util.Scanner;
+
+public class GuessingNumberApp {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Game game = new Game(); // Create an instance of the Game class
+        String playAgain;
+
+        // Display the welcome message
+        game.displayWelcomeMessage();
+
+        do {
+            // Start a new game by generating a random number
+            game.generateNumberToBeGuessed();
+            game.displayPleaseGuessMessage();
+
+            boolean hasGuessedCorrectly = false;
+
+            // Inner loop for guessing until the user guesses the correct number
+            while (!hasGuessedCorrectly) {
+                // Prompt the user for a guess
+                System.out.print("Enter your guess: ");
+                int userGuess = scanner.nextInt();
+
+                // Make the guess and increment the counter
+                game.makeGuess(userGuess);
+
+                // Check if the guess is correct
+                if (game.isCorrectGuess()) {
+                    // If the guess is correct, display the correct guess message and exit the loop
+                    game.displayCorrectGuessMessage();
+                    hasGuessedCorrectly = true;
+                } else {
+                    // If the guess is incorrect, prompt the user to guess again
+                    game.displayGuessAgainMessage();
+                }
+            }
+
+            // Ask the user if they want to play again
+            System.out.print("Do you want to play again? (y/n): ");
+            playAgain = scanner.next();
+
+        } while (playAgain.equalsIgnoreCase("y"));
+
+        System.out.println("Thank you for playing!");
+        scanner.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
 Create a Java class called Game. The class must Include:
 a. Date
 i. number (a random number between 1 and 100)
