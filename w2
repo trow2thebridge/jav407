@@ -1,0 +1,36 @@
+Create a Java class called Game. The class must Include:
+a. Date
+i. number (a random number between 1 and 100)
+ii.guessNumber (each guess made by the user)
+iii.counter (total number of guesses made so far)
+B.Methods
+i.generateNumberToBeGuessed()
+1.Generates a random number between 1 and 100
+ii. makeGuess() receives guessNumber as a parameter
+iii. isCorrectGuess() returns a boolean
+iv. displayWelcomeMessage()
+v. displayPleaseGuessMessage()
+vi. dsiplayCorrectGuessMessage()
+vii. displayGuessAgainMessage()
+
+
+Create a Java test class called GuessNumberApp and perform the following:
+a. Make an instance of the Game class
+b.Call the displayWelcomeMessage) method
+c. Create a while loop for a new game that terminates when user types "n”i. Call the generateNumber ToBeGuessed() method
+ii. Call the displayPleaseGuessMessage() method
+iii.Create a while loop for the new game that terminates when user guessos correctly
+1.Prompt user to entor a number between 1 and100
+2.Call makeGuess0·assign number guessedto guessNumber() and increment counter by 1
+3.Call isCorrectGuess()
+a. If true,call displayCorrectMessage() andexit loop
+b. If false, call displayGuessAgainMessage()
+
+Add logic to your program so that the following messagesare displayed:
+a.If the guess is more than 10 above the number to guess,display Way too high!Guess again”
+b.If the guess is 10 or less above the number to guessdisplay"Too high! Guess again."
+c.If the guess is more than 10 below the number to guess,display "Way too low! Guess again"
+d.If the guess is 10 ot less below the number to guessdisplay "Too lowl Guess again.*
+e.If the guess is made in three tries of loss,display "Greatwork! You are a mathematical wizard.".
+f.If the guess is made between 4 and 7 tries,display "Nottoo bad! You've got some potential.
+g.If the guess is made in more than 7 tries,display"Whattook you so long".
