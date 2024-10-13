@@ -37,6 +37,33 @@ g.If the guess is made in more than 7 tries,display"Whattook you so long".
 
 
 
+package guessingGame;
+
+public class Game {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
+
+
+
+package guessingGame;
+
+public class GuessingNumberApp {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
+
+
+
+
 
 import java.util.Random;
 
