@@ -8,3 +8,119 @@ public class TicTacToe {
 	}
 
 }
+
+
+
+package ticTacToe;
+
+import java.util.Scanner;
+
+public class TicTacToe {
+    private char[][] board = new char[3][3];
+    private int rowNumber;
+    private int columnNumber;
+    private char markSelected;
+    private char currentPlayer = 'X';
+
+    // Constructor to initialize the board
+    public TicTacToe() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = ' '; // Initialize all cells as empty
+            }
+        }
+    }
+
+    // Displays a welcome message
+    public void displayWelcomeMessage() {
+        System.out.println("Welcome to Tic Tac Toe!");
+        System.out.println("Player X and Player O, take turns placing marks on the grid.");
+    }
+
+    // Displays the current state of the grid
+    public void displayGrid() {
+        System.out.println("Current Board:");
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(" " + board[i][j]);
+                if (j < 2) System.out.print(" |");
+            }
+            System.out.println();
+            if (i < 2) System.out.println("-----------");
+        }
+    }
+
+    // Starts the main game loop
+    public void startGame() {
+        displayWelcomeMessage();
+        displayGrid();
+
+        while (true) {
+            if (takeTurn()) {
+                displayGrid();
+                if (checkForWinner()) {
+                    System.out.println("Player " + currentPlayer + " wins!");
+                    break;
+                }
+                if (isBoardFull()) {
+                    System.out.println("It's a draw!");
+                    break;
+                }
+                // Switch player
+                currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+            }
+        }
+    }
+
+    // Manages each player's turn
+    public boolean takeTurn() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Player " + currentPlayer + ", enter row (0, 1, or 2): ");
+        rowNumber = scanner.nextInt();
+        System.out.println("Player " + currentPlayer + ", enter column (0, 1, or 2): ");
+        columnNumber = scanner.nextInt();
+
+        // Validate input and check if the cell is occupied
+        if (rowNumber < 0 || rowNumber > 2 || columnNumber < 0 || columnNumber > 2) {
+            System.out.println("Invalid input! Please enter numbers between 0 and 2.");
+            return false;
+        } else if (board[rowNumber][columnNumber] != ' ') {
+            System.out.println("Cell is already occupied! Choose another cell.");
+            return false;
+        } else {
+            board[rowNumber][columnNumber] = currentPlayer;
+            return true;
+        }
+    }
+
+    // Checks if there is a winner
+    public boolean checkForWinner() {
+        // Check rows and columns
+        for (int i = 0; i < 3; i++) {
+            if ((board[i][0] == currentPlayer && board[i][1] == currentPlayer && board[i][2] == currentPlayer) ||
+                (board[0][i] == currentPlayer && board[1][i] == currentPlayer && board[2][i] == currentPlayer)) {
+                return true;
+            }
+        }
+
+        // Check diagonals
+        if ((board[0][0] == currentPlayer && board[1][1] == currentPlayer && board[2][2] == currentPlayer) ||
+            (board[0][2] == currentPlayer && board[1][1] == currentPlayer && board[2][0] == currentPlayer)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Checks if the board is full (for a draw)
+    public boolean isBoardFull() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
