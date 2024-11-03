@@ -124,3 +124,17 @@ public class TicTacToe {
         return true;
     }
 }
+
+
+
+
+
+
+package ticTacToe;
+
+public class TicTacToeApp {
+    public static void main(String[] args) {
+        TicTacToe game = new TicTacToe(); // Create a TicTacToe instance
+        game.startGame();                 // Start the game
+    }
+}
