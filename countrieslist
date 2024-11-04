@@ -8,3 +8,114 @@ public class CountriesList {
 	}
 
 }
+
+
+package countriesList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class CountriesList {
+    // Data fields
+    private ArrayList<String> countries = new ArrayList<>();
+    private int menuOption;
+
+    // Method to display a welcome message
+    public void displayWelcomeMessage() {
+        System.out.println("Welcome to the Countries List Application!");
+    }
+
+    // Method to display the menu
+    public void displayMenu() {
+        System.out.println("\nMenu:");
+        System.out.println("1 - Display countries");
+        System.out.println("2 - Add a country");
+        System.out.println("3 - Exit");
+    }
+
+    // Method to get the menu option from the user
+    public int getMenuOption() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your choice: ");
+        menuOption = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
+        return menuOption;
+    }
+
+    // Method to check if a country is already in the list
+    public boolean checkForCountry(String country) {
+        return countries.contains(country);
+    }
+
+    // Method to add a country to the list
+    public void addCountry(String country) {
+        if (!checkForCountry(country)) {
+            countries.add(country);
+            System.out.println(country + " has been added to the list.");
+        } else {
+            System.out.println(country + " is already in the list.");
+        }
+    }
+
+    // Method to display the list of countries
+    public void listCountries() {
+        if (countries.isEmpty()) {
+            System.out.println("The list is currently empty.");
+        } else {
+            Collections.sort(countries); // Sort countries alphabetically
+            System.out.println("Countries List:");
+            for (String country : countries) {
+                System.out.println("- " + country);
+            }
+        }
+    }
+}
+
+
+
+
+package countriesList;
+
+import java.util.Scanner;
+
+public class CountriesListApp {
+    public static void main(String[] args) {
+        // Create an instance of CountriesList
+        CountriesList countriesList = new CountriesList();
+        Scanner scanner = new Scanner(System.in);
+        
+        // Display welcome message
+        countriesList.displayWelcomeMessage();
+        
+        boolean running = true;
+        while (running) {
+            // Display menu and get user choice
+            countriesList.displayMenu();
+            int choice = countriesList.getMenuOption();
+
+            switch (choice) {
+                case 1: // Display countries
+                    countriesList.listCountries();
+                    break;
+                    
+                case 2: // Add a country
+                    System.out.print("Enter a country to add: ");
+                    String country = scanner.nextLine().trim();
+                    countriesList.addCountry(country);
+                    break;
+                    
+                case 3: // Exit
+                    System.out.println("Exiting the application. Goodbye!");
+                    running = false;
+                    break;
+                    
+                default: // Invalid option
+                    System.out.println("Invalid option. Please enter 1, 2, or 3.");
+                    break;
+            }
+        }
+        
+        scanner.close();
+    }
+}
