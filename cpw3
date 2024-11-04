@@ -9,6 +9,47 @@ public class BankAcctApp {
 
 }
 
+package courseProject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BankAcctApp {
+    public static void main(String[] args) {
+        List<Customer> customers = new ArrayList<>();
+        String continueEntry;
+        
+        System.out.println("Bank Account Application - Data Entry");
+
+        do {
+            Customer customer = new Customer();
+            customer.setCustomerID(DataEntry.inputString("Enter Customer ID (Max 5 characters): ", 5));
+            customer.setSSN(DataEntry.inputNumericString("Enter SSN (9 digits): ", 9));
+            customer.setLastName(DataEntry.inputString("Enter Last Name (Max 20 characters): ", 20));
+            customer.setFirstName(DataEntry.inputString("Enter First Name (Max 15 characters): ", 15));
+            customer.setStreet(DataEntry.inputString("Enter Street (Max 20 characters): ", 20));
+            customer.setCity(DataEntry.inputString("Enter City (Max 20 characters): ", 20));
+            customer.setState(DataEntry.inputString("Enter State (2 characters): ", 2));
+            customer.setZip(DataEntry.inputNumericString("Enter Zip Code (5 digits): ", 5));
+            customer.setPhone(DataEntry.inputNumericString("Enter Phone Number (10 digits): ", 10));
+
+            customers.add(customer);
+
+            System.out.print("Do you want to enter another customer? (yes/no): ");
+            continueEntry = new Scanner(System.in).nextLine();
+        } while (continueEntry.equalsIgnoreCase("yes"));
+
+        // Display all customers' information
+        System.out.println("\nCustomer Information:");
+        System.out.println("-------------------------------------------------");
+        for (Customer cust : customers) {
+            System.out.println(cust);
+            System.out.println("-------------------------------------------------");
+        }
+    }
+}
+
+
 
 package courseProject;
 
@@ -19,6 +60,62 @@ public class Customer {
 
 	}
 
+}
+
+
+package courseProject;
+
+public class Customer {
+    // Data fields
+    private String customerID;
+    private String ssn;
+    private String lastName;
+    private String firstName;
+    private String street;
+    private String city;
+    private String state;
+    private String zip;
+    private String phone;
+
+    // Constructor
+    public Customer() {}
+
+    // Getter and Setter methods with validation
+    public String getCustomerID() { return customerID; }
+    public void setCustomerID(String customerID) { this.customerID = customerID; }
+
+    public String getSSN() { return ssn; }
+    public void setSSN(String ssn) { this.ssn = ssn; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getStreet() { return street; }
+    public void setStreet(String street) { this.street = street; }
+
+    public String getCity() { return city; }
+    public void setCity(String city) { this.city = city; }
+
+    public String getState() { return state; }
+    public void setState(String state) { this.state = state; }
+
+    public String getZip() { return zip; }
+    public void setZip(String zip) { this.zip = zip; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    // toString method for formatted customer output
+    @Override
+    public String toString() {
+        return String.format(
+            "Customer ID: %s\nSSN: %s\nName: %s %s\nAddress: %s, %s, %s %s\nPhone: %s\n",
+            customerID, ssn, firstName, lastName, street, city, state, zip, phone
+        );
+    }
 }
 
 
@@ -34,4 +131,37 @@ public class DataEntry {
 
 }
 
+package courseProject;
+
+import java.util.Scanner;
+
+public class DataEntry {
+    private static Scanner scanner = new Scanner(System.in);
+
+    // Method for string entry with no limit
+    public static String inputString(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
+    // Method for string entry with length limit
+    public static String inputString(String prompt, int maxLength) {
+        String input;
+        do {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+        } while (input.isEmpty() || input.length() > maxLength);
+        return input;
+    }
+
+    // Method for numeric string entry
+    public static String inputNumericString(String prompt, int length) {
+        String input;
+        do {
+            System.out.print(prompt);
+            input = scanner.nextLine();
+        } while (input.length() != length || !input.matches("\\d+"));
+        return input;
+    }
+}
 
