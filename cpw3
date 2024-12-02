@@ -1,5 +1,250 @@
 package courseProject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class BankAcctApp {
+    public static void main(String[] args) {
+        List<Customer> customers = new ArrayList<>();
+        String continueEntry;
+
+        System.out.println("Bank Account Application - Data Entry");
+
+        do {
+            Customer customer = new Customer();
+            Account account = new Account();
+
+            // Input customer details
+            while (true) {
+                try {
+                    customer.setCustomerID(DataEntry.inputString("Enter Customer ID (Max 5 characters): ", 5));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setSSN(DataEntry.inputNumericString("Enter SSN (9 digits): ", 9));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setLastName(DataEntry.inputString("Enter Last Name (Max 20 characters): ", 20));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setFirstName(DataEntry.inputString("Enter First Name (Max 15 characters): ", 15));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setStreet(DataEntry.inputString("Enter Street (Max 20 characters): ", 20));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setCity(DataEntry.inputString("Enter City (Max 20 characters): ", 20));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setState(DataEntry.inputString("Enter State (2 characters): ", 2));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setZip(DataEntry.inputNumericString("Enter Zip Code (5 digits): ", 5));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setPhone(DataEntry.inputNumericString("Enter Phone Number (10 digits): ", 10));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            // Input account details
+            while (true) {
+                try {
+                    account.setAccountNumber(DataEntry.inputString("Enter Account Number (Max 5 characters): ", 5));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setAccountType(DataEntry.inputString("Enter Account Type (CHK/SAV): "));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setServiceFee(Double.parseDouble(DataEntry.inputString("Enter Service Fee (0.00 - 10.00): ")));
+                    break;
+                } catch (IllegalArgumentException | NumberFormatException e) {
+                    System.out.println("Invalid input for Service Fee. Must be a number between 0.00 and 10.00.");
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setInterestRate(Double.parseDouble(DataEntry.inputString("Enter Interest Rate (0.0 - 10.0): ")));
+                    break;
+                } catch (IllegalArgumentException | NumberFormatException e) {
+                    System.out.println("Invalid input for Interest Rate. Must be a number between 0.0 and 10.0.");
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setOverdraftFee(Double.parseDouble(DataEntry.inputString("Enter Overdraft Fee: ")));
+                    break;
+                } catch (IllegalArgumentException | NumberFormatException e) {
+                    System.out.println("Invalid input for Overdraft Fee. Must be a positive number.");
+                }
+            }
+
+            // Add customer and account to list
+            customers.add(customer);
+
+            System.out.print("Do you want to enter another customer? (yes/no): ");
+            continueEntry = DataEntry.inputString("");
+        } while (continueEntry.equalsIgnoreCase("yes"));
+
+        // Display all customers and their accounts
+        System.out.println("\nCustomer and Account Information:");
+        System.out.println("-------------------------------------------------");
+        for (Customer cust : customers) {
+            System.out.println(cust);
+            System.out.println("-------------------------------------------------");
+        }
+    }
+}
+-----
+package courseProject;
+
+public class Account {
+    private String accountNumber; // Max 5 characters
+    private String accountType; // CHK or SAV
+    private double serviceFee; // Range 0.00 to 10.00
+    private double interestRate; // Range 0.0 to 10.0 percent
+    private double overdraftFee; // Positive value
+    private double balance = 0.0; // Initial balance is zero
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        if (accountNumber.length() > 5) {
+            throw new IllegalArgumentException("Account Number must be 5 characters or fewer.");
+        }
+        this.accountNumber = accountNumber;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        if (!accountType.equalsIgnoreCase("CHK") && !accountType.equalsIgnoreCase("SAV")) {
+            throw new IllegalArgumentException("Account Type must be 'CHK' or 'SAV'.");
+        }
+        this.accountType = accountType;
+    }
+
+    public double getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(double serviceFee) {
+        if (serviceFee < 0.0 || serviceFee > 10.0) {
+            throw new IllegalArgumentException("Service Fee must be between 0.00 and 10.00.");
+        }
+        this.serviceFee = serviceFee;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        if (interestRate < 0.0 || interestRate > 10.0) {
+            throw new IllegalArgumentException("Interest Rate must be between 0.0 and 10.0 percent.");
+        }
+        this.interestRate = interestRate;
+    }
+
+    public double getOverdraftFee() {
+        return overdraftFee;
+    }
+
+    public void setOverdraftFee(double overdraftFee) {
+        if (overdraftFee < 0.0) {
+            throw new IllegalArgumentException("Overdraft Fee must be a positive value.");
+        }
+        this.overdraftFee = overdraftFee;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    // Add a formatted string for account details
+    @Override
+    public String toString() {
+        return String.format(
+            "Account Number: %s\nAccount Type: %s\nService Fee: %.2f\nInterest Rate: %.2f%%\nOverdraft Fee: %.2f\nBalance: %.2f\n",
+            accountNumber, accountType, serviceFee, interestRate, overdraftFee, balance
+        );
+    }
+}
+
+
+
+Phase 2 ^^
+=======
+
+package courseProject;
+
 import java.util.Scanner;
 
 public class DataEntry {
