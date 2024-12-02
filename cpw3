@@ -1,3 +1,197 @@
+update bankaccount 
+
+package courseProject;
+
+import java.util.Scanner;
+
+public class BankAcctApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Create two customers
+        System.out.println("Enter details for Customer 1 (Checking Account):");
+        Customer customer1 = createCustomer();
+        CheckingAccount checkingAccount = new CheckingAccount();
+        setupAccount(scanner, checkingAccount);
+
+        System.out.println("Enter details for Customer 2 (Savings Account):");
+        Customer customer2 = createCustomer();
+        SavingsAccount savingsAccount = new SavingsAccount();
+        setupAccount(scanner, savingsAccount);
+
+        // Perform transactions
+        System.out.println("\n--- Transactions for Checking Account ---");
+        performTransactions(checkingAccount);
+
+        System.out.println("\n--- Transactions for Savings Account ---");
+        performTransactions(savingsAccount);
+    }
+
+    private static Customer createCustomer() {
+        Customer customer = new Customer();
+        customer.setCustomerID(DataEntry.inputString("Enter Customer ID (Max 5 characters): ", 5));
+        customer.setSSN(DataEntry.inputNumericString("Enter SSN (9 digits): ", 9));
+        customer.setLastName(DataEntry.inputString("Enter Last Name (Max 20 characters): ", 20));
+        customer.setFirstName(DataEntry.inputString("Enter First Name (Max 15 characters): ", 15));
+        customer.setStreet(DataEntry.inputString("Enter Street (Max 20 characters): ", 20));
+        customer.setCity(DataEntry.inputString("Enter City (Max 20 characters): ", 20));
+        customer.setState(DataEntry.inputString("Enter State (2 characters): ", 2));
+        customer.setZip(DataEntry.inputNumericString("Enter Zip Code (5 digits): ", 5));
+        customer.setPhone(DataEntry.inputNumericString("Enter Phone Number (10 digits): ", 10));
+        return customer;
+    }
+
+    private static void setupAccount(Scanner scanner, Account account) {
+        while (true) {
+            try {
+                account.setAccountNumber(DataEntry.inputString("Enter Account Number (Max 5 characters): ", 5));
+                account.setAccountType(account instanceof CheckingAccount ? "CHK" : "SAV");
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private static void performTransactions(Account account) {
+        account.deposit(1000);
+        account.withdraw(500);
+        try {
+            account.withdraw(501);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        account.deposit(500);
+        account.addInterest();
+    }
+}
+
+====
+add SavingAccount
+
+package courseProject;
+
+public class SavingsAccount extends Account {
+    private static final double SERVICE_FEE = 0.25;
+
+    @Override
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be greater than zero.");
+        }
+        balance += amount - SERVICE_FEE;
+        System.out.println(String.format("Deposit of %.2f made. Service fee of %.2f applied. New balance: %.2f", amount, SERVICE_FEE, balance));
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be greater than zero.");
+        }
+        if (amount + SERVICE_FEE > balance) {
+            throw new IllegalArgumentException("Insufficient funds. Savings account cannot have a negative balance.");
+        }
+        balance -= amount + SERVICE_FEE;
+        System.out.println(String.format("Withdrawal of %.2f made. Service fee of %.2f applied. New balance: %.2f", amount, SERVICE_FEE, balance));
+    }
+
+    @Override
+    public void addInterest() {
+        balance += balance * SAVINGS_INTEREST_RATE;
+        System.out.println(String.format("Interest added at %.2f%%. New balance: %.2f", SAVINGS_INTEREST_RATE * 100, balance));
+    }
+}
+
+======
+add CheckingAccount
+
+package courseProject;
+
+public class CheckingAccount extends Account {
+    private static final double SERVICE_FEE = 0.50;
+    private static final double OVERDRAFT_FEE = 30.00;
+
+    @Override
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be greater than zero.");
+        }
+        balance += amount - SERVICE_FEE;
+        System.out.println(String.format("Deposit of %.2f made. Service fee of %.2f applied. New balance: %.2f", amount, SERVICE_FEE, balance));
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be greater than zero.");
+        }
+        balance -= amount + SERVICE_FEE;
+        if (balance < 0) {
+            balance -= OVERDRAFT_FEE;
+            System.out.println(String.format("Withdrawal of %.2f made. Service fee of %.2f and overdraft fee of %.2f applied. New balance: %.2f", amount, SERVICE_FEE, OVERDRAFT_FEE, balance));
+        } else {
+            System.out.println(String.format("Withdrawal of %.2f made. Service fee of %.2f applied. New balance: %.2f", amount, SERVICE_FEE, balance));
+        }
+    }
+
+    @Override
+    public void addInterest() {
+        balance += balance * CHECKING_INTEREST_RATE;
+        System.out.println(String.format("Interest added at %.2f%%. New balance: %.2f", CHECKING_INTEREST_RATE * 100, balance));
+    }
+}
+
+=====
+update account
+
+package courseProject;
+
+public abstract class Account {
+    private String accountNumber; // Max 5 characters
+    private String accountType; // CHK or SAV
+    protected double balance = 0.0; // Initial balance is zero
+    protected static final double CHECKING_INTEREST_RATE = 0.02;
+    protected static final double SAVINGS_INTEREST_RATE = 0.05;
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        if (accountNumber.length() > 5) {
+            throw new IllegalArgumentException("Account Number must be 5 characters or fewer.");
+        }
+        this.accountNumber = accountNumber;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        if (!accountType.equalsIgnoreCase("CHK") && !accountType.equalsIgnoreCase("SAV")) {
+            throw new IllegalArgumentException("Account Type must be 'CHK' or 'SAV'.");
+        }
+        this.accountType = accountType;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    // Abstract methods
+    public abstract void deposit(double amount);
+
+    public abstract void withdraw(double amount);
+
+    // Add interest
+    public abstract void addInterest();
+}
+
+
+
+phase 3
+======
 package courseProject;
 
 import java.util.ArrayList;
