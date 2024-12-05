@@ -107,3 +107,69 @@ public class StackCalculator {
     }
 }
 
+
+
+package stackCalculator;
+
+import java.util.Scanner;
+
+public class StackCalculatorApp {
+    public static void main(String[] args) {
+        StackCalculator calculator = new StackCalculator();
+        Scanner scanner = new Scanner(System.in);
+
+        calculator.displayWelcomeMessage();
+        calculator.displayCommands();
+
+        boolean running = true;
+
+        while (running) {
+            System.out.print("\nEnter command: ");
+            String input = scanner.nextLine();
+            String[] parts = input.split(" ");
+            String command = parts[0];
+
+            try {
+                switch (command) {
+                    case "push":
+                        if (parts.length > 1) {
+                            int value = Integer.parseInt(parts[1]);
+                            calculator.push(value);
+                        } else {
+                            System.out.println("Error: Missing value for push command.");
+                        }
+                        break;
+                    case "add":
+                        System.out.println("Result: " + calculator.add());
+                        break;
+                    case "sub":
+                        System.out.println("Result: " + calculator.sub());
+                        break;
+                    case "mult":
+                        System.out.println("Result: " + calculator.mult());
+                        break;
+                    case "div":
+                        System.out.println("Result: " + calculator.div());
+                        break;
+                    case "clear":
+                        calculator.clearStack();
+                        break;
+                    case "list":
+                        calculator.listStack();
+                        break;
+                    case "quit":
+                        running = false;
+                        System.out.println("Exiting Stack Calculator. Goodbye!");
+                        break;
+                    default:
+                        System.out.println("Error: Invalid command.");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+
+        scanner.close();
+    }
+}
