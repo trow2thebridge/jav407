@@ -1,0 +1,52 @@
+public class StackCalculatorApp {
+    public static void main(String[] args) {
+        StackCalculator calculator = new StackCalculator();
+        Scanner scanner = new Scanner(System.in);
+
+        calculator.displayWelcomeMessage();
+        calculator.displayCommands();
+
+        while (true) {
+            System.out.print("\nEnter command: ");
+            String input = scanner.nextLine();
+            String[] parts = input.split(" ");
+            String command = parts[0];
+
+            try {
+                switch (command) {
+                    case "push":
+                        int value = Integer.parseInt(parts[1]);
+                        calculator.push(value);
+                        break;
+                    case "add":
+                        System.out.println("Result: " + calculator.add());
+                        break;
+                    case "sub":
+                        System.out.println("Result: " + calculator.sub());
+                        break;
+                    case "mult":
+                        System.out.println("Result: " + calculator.mult());
+                        break;
+                    case "div":
+                        System.out.println("Result: " + calculator.div());
+                        break;
+                    case "clear":
+                        calculator.clearStack();
+                        break;
+                    case "list":
+                        calculator.listStack();
+                        break;
+                    case "quit":
+                        System.out.println("Exiting Stack Calculator. Goodbye!");
+                        scanner.close();
+                        return;
+                    default:
+                        System.out.println("Invalid command. Try again.");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+}
