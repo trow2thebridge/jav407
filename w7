@@ -1,5 +1,82 @@
 package animalCounter;
 
+import java.util.Scanner;
+
+public class AnimalCounterGUI {
+    private Alligator alligator = new Alligator();
+    private Sheep sheep = new Sheep();
+
+    public AnimalCounterGUI() {
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+
+        System.out.println("Welcome to the Animal Counter!");
+
+        while (running) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Add Alligator");
+            System.out.println("2. Add Sheep");
+            System.out.println("3. Display Counts");
+            System.out.println("4. Reset Counts");
+            System.out.println("5. Exit");
+
+            System.out.print("Select an option: ");
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    alligator.incrementCount();
+                    System.out.println("Alligator added. Total alligators: " + alligator.getCount());
+                    break;
+                case 2:
+                    sheep.incrementCount();
+                    System.out.println("Two sheep added. Total sheep: " + sheep.getCount());
+                    break;
+                case 3:
+                    System.out.println("Current Counts:");
+                    System.out.println("Alligators: " + alligator.getCount());
+                    System.out.println("Sheep: " + sheep.getCount());
+                    break;
+                case 4:
+                    resetCounts(scanner);
+                    break;
+                case 5:
+                    running = false;
+                    System.out.println("Thank you for using the Animal Counter!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    private void resetCounts(Scanner scanner) {
+        System.out.println("Reset Options:");
+        System.out.println("1. Reset Alligators");
+        System.out.println("2. Reset Sheep");
+        System.out.print("Select an option: ");
+        int resetChoice = scanner.nextInt();
+
+        if (resetChoice == 1) {
+            alligator.resetCount();
+            System.out.println("Alligator count reset to 0.");
+        } else if (resetChoice == 2) {
+            sheep.resetCount();
+            System.out.println("Sheep count reset to 0.");
+        } else {
+            System.out.println("Invalid choice. Returning to main menu.");
+        }
+    }
+}
+
+
+pppppp
+
+
+package animalCounter;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
