@@ -1,63 +1,109 @@
 package stackCalculator;
 
+import java.util.Scanner;
+import java.util.Stack;
+
 public class StackCalculator {
+    // Data
+    private Stack<Integer> calculator = new Stack<>();
+    private String command;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+    // Methods
+    public void displayWelcomeMessage() {
+        System.out.println("Welcome to the Stack Calculator!");
+    }
 
-	}
+    public void displayCommands() {
+        System.out.println("Available Commands:");
+        System.out.println("push n   : Push a value onto the stack");
+        System.out.println("add      : Add the top two values");
+        System.out.println("sub      : Subtract the second value from the first");
+        System.out.println("mult     : Multiply the top two values");
+        System.out.println("div      : Divide the second value by the first");
+        System.out.println("clear    : Clear the stack");
+        System.out.println("list     : Display the stack contents");
+        System.out.println("quit     : Exit the calculator");
+    }
 
-}
+    public void push(int value) {
+        calculator.push(value);
+        System.out.println(value + " added to the stack.");
+    }
 
-public class StackCalculatorApp {
-    public static void main(String[] args) {
-        StackCalculator calculator = new StackCalculator();
-        Scanner scanner = new Scanner(System.in);
-
-        calculator.displayWelcomeMessage();
-        calculator.displayCommands();
-
-        while (true) {
-            System.out.print("\nEnter command: ");
-            String input = scanner.nextLine();
-            String[] parts = input.split(" ");
-            String command = parts[0];
-
-            try {
-                switch (command) {
-                    case "push":
-                        int value = Integer.parseInt(parts[1]);
-                        calculator.push(value);
-                        break;
-                    case "add":
-                        System.out.println("Result: " + calculator.add());
-                        break;
-                    case "sub":
-                        System.out.println("Result: " + calculator.sub());
-                        break;
-                    case "mult":
-                        System.out.println("Result: " + calculator.mult());
-                        break;
-                    case "div":
-                        System.out.println("Result: " + calculator.div());
-                        break;
-                    case "clear":
-                        calculator.clearStack();
-                        break;
-                    case "list":
-                        calculator.listStack();
-                        break;
-                    case "quit":
-                        System.out.println("Exiting Stack Calculator. Goodbye!");
-                        scanner.close();
-                        return;
-                    default:
-                        System.out.println("Invalid command. Try again.");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-            }
+    public int pop() {
+        if (!calculator.isEmpty()) {
+            return calculator.pop();
+        } else {
+            System.out.println("Error: Stack is empty.");
+            return 0;
         }
     }
+
+    public int size() {
+        return calculator.size();
+    }
+
+    public void listStack() {
+        System.out.println("Stack Contents: " + calculator);
+    }
+
+    public void clearStack() {
+        calculator.clear();
+        System.out.println("Stack has been cleared.");
+    }
+
+    public int add() {
+        if (calculator.size() < 2) {
+            System.out.println("Error: Not enough values in the stack.");
+            return 0;
+        }
+        int b = pop();
+        int a = pop();
+        int result = a + b;
+        push(result);
+        return result;
+    }
+
+    public int sub() {
+        if (calculator.size() < 2) {
+            System.out.println("Error: Not enough values in the stack.");
+            return 0;
+        }
+        int b = pop();
+        int a = pop();
+        int result = a - b;
+        push(result);
+        return result;
+    }
+
+    public int mult() {
+        if (calculator.size() < 2) {
+            System.out.println("Error: Not enough values in the stack.");
+            return 0;
+        }
+        int b = pop();
+        int a = pop();
+        int result = a * b;
+        push(result);
+        return result;
+    }
+
+    public int div() {
+        if (calculator.size() < 2) {
+            System.out.println("Error: Not enough values in the stack.");
+            return 0;
+        }
+        int b = pop();
+        int a = pop();
+        if (b == 0) {
+            System.out.println("Error: Division by zero.");
+            push(a);
+            push(b);
+            return 0;
+        }
+        int result = a / b;
+        push(result);
+        return result;
+    }
 }
+
