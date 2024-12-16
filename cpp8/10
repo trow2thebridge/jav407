@@ -1,0 +1,174 @@
+package courseProject;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+public class BankAcctAppGUI {
+    private JFrame frame;
+    private JTextField txtCustomerID, txtSSN, txtLastName, txtFirstName, txtStreet, txtCity, txtZip, txtPhone, txtAccountNumber, txtServiceFee, txtInterestRate, txtTransactionAmount, txtTransactionDate;
+    private JComboBox<String> cmbState;
+    private JRadioButton rdoChecking, rdoSavings, rdoDeposit, rdoWithdraw;
+    private JLabel lblMessage;
+    private JButton btnAddCustomer, btnDisplayData, btnPerformTransaction, btnClear;
+
+    private List<Customer> customers = new ArrayList<>();
+    private Account currentAccount;
+
+    public BankAcctAppGUI() {
+        initializeGUI();
+    }
+
+    private void initializeGUI() {
+        frame = new JFrame("Bank Account Application");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setLayout(new BorderLayout());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(15, 2));
+
+        panel.add(new JLabel("Customer ID:"));
+        txtCustomerID = new JTextField();
+        panel.add(txtCustomerID);
+
+        panel.add(new JLabel("SSN:"));
+        txtSSN = new JTextField();
+        panel.add(txtSSN);
+
+        panel.add(new JLabel("Last Name:"));
+        txtLastName = new JTextField();
+        panel.add(txtLastName);
+
+        panel.add(new JLabel("First Name:"));
+        txtFirstName = new JTextField();
+        panel.add(txtFirstName);
+
+        panel.add(new JLabel("Street:"));
+        txtStreet = new JTextField();
+        panel.add(txtStreet);
+
+        panel.add(new JLabel("City:"));
+        txtCity = new JTextField();
+        panel.add(txtCity);
+
+        panel.add(new JLabel("State:"));
+        cmbState = new JComboBox<>(new String[]{"CA", "NY", "TX", "FL", "WA"});
+        panel.add(cmbState);
+
+        panel.add(new JLabel("Zip Code:"));
+        txtZip = new JTextField();
+        panel.add(txtZip);
+
+        panel.add(new JLabel("Phone:"));
+        txtPhone = new JTextField();
+        panel.add(txtPhone);
+
+        panel.add(new JLabel("Account Number:"));
+        txtAccountNumber = new JTextField();
+        panel.add(txtAccountNumber);
+
+        panel.add(new JLabel("Service Fee:"));
+        txtServiceFee = new JTextField();
+        panel.add(txtServiceFee);
+
+        panel.add(new JLabel("Interest Rate:"));
+        txtInterestRate = new JTextField();
+        panel.add(txtInterestRate);
+
+        panel.add(new JLabel("Account Type:"));
+        rdoChecking = new JRadioButton("Checking");
+        rdoSavings = new JRadioButton("Savings");
+        ButtonGroup accountTypeGroup = new ButtonGroup();
+        accountTypeGroup.add(rdoChecking);
+        accountTypeGroup.add(rdoSavings);
+        JPanel accountTypePanel = new JPanel();
+        accountTypePanel.add(rdoChecking);
+        accountTypePanel.add(rdoSavings);
+        panel.add(accountTypePanel);
+
+        panel.add(new JLabel("Transaction Type:"));
+        rdoDeposit = new JRadioButton("Deposit");
+        rdoWithdraw = new JRadioButton("Withdraw");
+        ButtonGroup transactionTypeGroup = new ButtonGroup();
+        transactionTypeGroup.add(rdoDeposit);
+        transactionTypeGroup.add(rdoWithdraw);
+        JPanel transactionTypePanel = new JPanel();
+        transactionTypePanel.add(rdoDeposit);
+        transactionTypePanel.add(rdoWithdraw);
+        panel.add(transactionTypePanel);
+
+        panel.add(new JLabel("Transaction Amount:"));
+        txtTransactionAmount = new JTextField();
+        panel.add(txtTransactionAmount);
+
+        panel.add(new JLabel("Transaction Date:"));
+        txtTransactionDate = new JTextField();
+        panel.add(txtTransactionDate);
+
+        btnAddCustomer = new JButton("Add New Customer and Account");
+        btnAddCustomer.addActionListener(e -> addCustomerAndAccount());
+        panel.add(btnAddCustomer);
+
+        btnDisplayData = new JButton("Display Customer and Account Data");
+        btnDisplayData.addActionListener(e -> displayCustomerData());
+        panel.add(btnDisplayData);
+
+        btnPerformTransaction = new JButton("Perform Transaction");
+        btnPerformTransaction.addActionListener(e -> performTransaction());
+        panel.add(btnPerformTransaction);
+
+        btnClear = new JButton("Clear");
+        btnClear.addActionListener(e -> clearFields());
+        panel.add(btnClear);
+
+        lblMessage = new JLabel("", SwingConstants.CENTER);
+        lblMessage.setForeground(Color.RED);
+
+        frame.add(panel, BorderLayout.CENTER);
+        frame.add(lblMessage, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+
+    private void addCustomerAndAccount() {
+        // Add code to validate and add customer and account information
+        lblMessage.setText("Customer and Account Added!");
+    }
+
+    private void displayCustomerData() {
+        // Add code to display customer and account data
+        lblMessage.setText("Displaying Customer Data...");
+    }
+
+    private void performTransaction() {
+        // Add code to perform transactions
+        lblMessage.setText("Transaction Completed!");
+    }
+
+    private void clearFields() {
+        txtCustomerID.setText("");
+        txtSSN.setText("");
+        txtLastName.setText("");
+        txtFirstName.setText("");
+        txtStreet.setText("");
+        txtCity.setText("");
+        txtZip.setText("");
+        txtPhone.setText("");
+        txtAccountNumber.setText("");
+        txtServiceFee.setText("");
+        txtInterestRate.setText("");
+        txtTransactionAmount.setText("");
+        txtTransactionDate.setText("");
+        lblMessage.setText("");
+        rdoChecking.setSelected(false);
+        rdoSavings.setSelected(false);
+        rdoDeposit.setSelected(false);
+        rdoWithdraw.setSelected(false);
+    }
+
+    public static void main(String[] args) {
+        new BankAcctAppGUI();
+    }
+}
