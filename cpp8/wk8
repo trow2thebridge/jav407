@@ -259,3 +259,116 @@ public class BankAcctApp {
         }
     }
 }
+
+
+
+
+correct 
+
+// Updated BankAcctApp class
+public class BankAcctApp {
+    public static void main(String[] args) {
+        List<Customer> customers = new ArrayList<>();
+        String continueEntry;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Bank Account Application - Data Entry");
+
+        do {
+            Customer customer = new Customer();
+            Account account = null;
+
+            // Customer data entry with validation
+            while (true) {
+                try {
+                    customer.setCustomerID(DataEntry.inputString("Enter Customer ID (Max 5 characters): ", 5));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setSSN(DataEntry.inputNumericString("Enter SSN (9 digits): ", 9));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            customer.setLastName(DataEntry.inputString("Enter Last Name (Max 20 characters): ", 20));
+            customer.setFirstName(DataEntry.inputString("Enter First Name (Max 15 characters): ", 15));
+            customer.setStreet(DataEntry.inputString("Enter Street (Max 20 characters): ", 20));
+            customer.setCity(DataEntry.inputString("Enter City (Max 20 characters): ", 20));
+            customer.setState(DataEntry.inputString("Enter State (2 characters): ", 2));
+            customer.setZip(DataEntry.inputNumericString("Enter Zip Code (5 digits): ", 5));
+            customer.setPhone(DataEntry.inputNumericString("Enter Phone Number (10 digits): ", 10));
+
+            // Account type selection and validation
+            while (true) {
+                try {
+                    String accountType = DataEntry.inputString("Enter Account Type (CHK or SAV): ");
+                    if ("CHK".equalsIgnoreCase(accountType)) {
+                        account = new CheckingAccount();
+                    } else if ("SAV".equalsIgnoreCase(accountType)) {
+                        account = new SavingsAccount();
+                    } else {
+                        throw new IllegalArgumentException("Invalid account type. Please enter 'CHK' or 'SAV'.");
+                    }
+                    account.setAccountType(accountType);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setAccountNumber(DataEntry.inputString("Enter Account Number (Max 5 characters): ", 5));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    String serviceFeeInput = DataEntry.inputString("Enter Service Fee (0.00 to 10.00): ");
+                    account.setServiceFee(Double.parseDouble(serviceFeeInput));
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input: Please enter a valid number for the service fee.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    String interestRateInput = DataEntry.inputString("Enter Interest Rate (0 to 10): ");
+                    account.setInterestRate(Double.parseDouble(interestRateInput));
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input: Please enter a valid number for the interest rate.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            customers.add(customer);
+
+            System.out.print("Do you want to enter another customer? (yes/no): ");
+            continueEntry = scanner.nextLine();
+        } while (continueEntry.equalsIgnoreCase("yes"));
+
+        // Display all customers' and their accounts' information
+        System.out.println("\nCustomer and Account Information:");
+        System.out.println("-------------------------------------------------");
+        for (Customer cust : customers) {
+            System.out.println(cust);
+            System.out.println("-------------------------------------------------");
+        }
+    }
+}
+
