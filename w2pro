@@ -1,3 +1,65 @@
+package guessingGame;
+
+import java.util.Scanner;
+import java.util.Random;
+
+public class GuessingGame {
+
+    public static void main(String[] args) {
+        // Initialize variables
+        Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+
+        int targetNumber = random.nextInt(100) + 1; // Random number between 1 and 100
+        int previousGuess = -1; // To store the user's previous guess
+        int currentGuess;
+        int attempts = 0;
+        boolean hasWon = false;
+
+        System.out.println("Welcome to the Guessing Game!");
+        System.out.println("I'm thinking of a number between 1 and 100. Can you guess it?");
+        
+        while (!hasWon) {
+            System.out.print("Enter your guess: ");
+            currentGuess = scanner.nextInt();
+            attempts++;
+
+            if (currentGuess == targetNumber) {
+                hasWon = true;
+                System.out.println("Congratulations! You've guessed the number in " + attempts + " attempts.");
+            } else {
+                // Provide feedback: too low or too high
+                if (currentGuess < targetNumber) {
+                    System.out.println("Too low!");
+                } else {
+                    System.out.println("Too high!");
+                }
+
+                // Provide feedback: warmer or colder
+                if (previousGuess != -1) { // Ensure we have a previous guess to compare
+                    int previousDistance = Math.abs(previousGuess - targetNumber);
+                    int currentDistance = Math.abs(currentGuess - targetNumber);
+
+                    if (currentDistance < previousDistance) {
+                        System.out.println("Warmer!");
+                    } else {
+                        System.out.println("Colder!");
+                    }
+                }
+
+                // Update the previous guess
+                previousGuess = currentGuess;
+            }
+        }
+
+        System.out.println("Thank you for playing!");
+        scanner.close();
+    }
+}
+
+
+
+
 package ticTacToe;
 
 public class TicTacToe {
