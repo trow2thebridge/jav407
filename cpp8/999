@@ -251,3 +251,7 @@ public class CLIApp {
         }
     }
 }
+
+Checking Account Final Balance: 467.50
+Savings account balance cannot be negative.
+
