@@ -1,0 +1,236 @@
+wk 8
+
+package courseProject;
+
+import java.util.*;
+
+// Abstract Account class
+public abstract class Account {
+    private String accountNumber;
+    private String accountType;
+    private double serviceFee;
+    private double interestRate;
+    private double balance = 0.0;
+
+    // Abstract methods
+    public abstract void withdrawal(double amount);
+    public abstract void deposit(double amount);
+
+    // Constructor
+    public Account() {}
+
+    // Getters and setters with validation
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        if (accountNumber == null || accountNumber.length() > 5) {
+            throw new IllegalArgumentException("Account number must be non-blank and max 5 characters.");
+        }
+        this.accountNumber = accountNumber;
+    }
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        if (!"CHK".equalsIgnoreCase(accountType) && !"SAV".equalsIgnoreCase(accountType)) {
+            throw new IllegalArgumentException("Account type must be 'CHK' or 'SAV'.");
+        }
+        this.accountType = accountType.toUpperCase();
+    }
+
+    public double getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(double serviceFee) {
+        if (serviceFee < 0 || serviceFee > 10) {
+            throw new IllegalArgumentException("Service fee must be between 0 and 10 inclusive.");
+        }
+        this.serviceFee = serviceFee;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        if (interestRate < 0 || interestRate > 10) {
+            throw new IllegalArgumentException("Interest rate must be between 0 and 10 percent inclusive.");
+        }
+        this.interestRate = interestRate;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Account Number: %s\nAccount Type: %s\nService Fee: %.2f\nInterest Rate: %.2f%%\nBalance: %.2f\n",
+            accountNumber, accountType, serviceFee, interestRate, balance
+        );
+    }
+}
+
+// CheckingAccount subclass
+class CheckingAccount extends Account {
+    private static final double SERVICE_FEE = 0.50;
+    private static final double OVERDRAFT_FEE = 30.00;
+
+    @Override
+    public void withdrawal(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive.");
+        }
+
+        double newBalance = getBalance() - amount - SERVICE_FEE;
+        if (newBalance < 0) {
+            newBalance -= OVERDRAFT_FEE;
+        }
+        setBalance(newBalance);
+    }
+
+    @Override
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive.");
+        }
+        setBalance(getBalance() + amount - SERVICE_FEE);
+    }
+}
+
+// SavingsAccount subclass
+class SavingsAccount extends Account {
+    private static final double SERVICE_FEE = 0.25;
+
+    @Override
+    public void withdrawal(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive.");
+        }
+
+        if (amount + SERVICE_FEE > getBalance()) {
+            throw new IllegalArgumentException("Insufficient funds for withdrawal.");
+        }
+
+        setBalance(getBalance() - amount - SERVICE_FEE);
+    }
+
+    @Override
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive.");
+        }
+        setBalance(getBalance() + amount - SERVICE_FEE);
+    }
+}
+
+// Updated BankAcctApp class
+public class BankAcctApp {
+    public static void main(String[] args) {
+        List<Customer> customers = new ArrayList<>();
+        String continueEntry;
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Bank Account Application - Data Entry");
+
+        do {
+            Customer customer = new Customer();
+            Account account = null;
+
+            // Customer data entry with validation
+            while (true) {
+                try {
+                    customer.setCustomerID(DataEntry.inputString("Enter Customer ID (Max 5 characters): ", 5));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    customer.setSSN(DataEntry.inputNumericString("Enter SSN (9 digits): ", 9));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            customer.setLastName(DataEntry.inputString("Enter Last Name (Max 20 characters): ", 20));
+            customer.setFirstName(DataEntry.inputString("Enter First Name (Max 15 characters): ", 15));
+            customer.setStreet(DataEntry.inputString("Enter Street (Max 20 characters): ", 20));
+            customer.setCity(DataEntry.inputString("Enter City (Max 20 characters): ", 20));
+            customer.setState(DataEntry.inputString("Enter State (2 characters): ", 2));
+            customer.setZip(DataEntry.inputNumericString("Enter Zip Code (5 digits): ", 5));
+            customer.setPhone(DataEntry.inputNumericString("Enter Phone Number (10 digits): ", 10));
+
+            // Account type selection and validation
+            while (true) {
+                try {
+                    String accountType = DataEntry.inputString("Enter Account Type (CHK or SAV): ");
+                    if ("CHK".equalsIgnoreCase(accountType)) {
+                        account = new CheckingAccount();
+                    } else if ("SAV".equalsIgnoreCase(accountType)) {
+                        account = new SavingsAccount();
+                    } else {
+                        throw new IllegalArgumentException("Invalid account type. Please enter 'CHK' or 'SAV'.");
+                    }
+                    account.setAccountType(accountType);
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setAccountNumber(DataEntry.inputString("Enter Account Number (Max 5 characters): ", 5));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setServiceFee(Double.parseDouble(DataEntry.inputString("Enter Service Fee (0.00 to 10.00): ")));
+                    break;
+                } catch (IllegalArgumentException | NumberFormatException e) {
+                    System.out.println("Invalid input: " + e.getMessage());
+                }
+            }
+
+            while (true) {
+                try {
+                    account.setInterestRate(Double.parseDouble(DataEntry.inputString("Enter Interest Rate (0 to 10): ")));
+                    break;
+                } catch (IllegalArgumentException | NumberFormatException e) {
+                    System.out.println("Invalid input: " + e.getMessage());
+                }
+            }
+
+            customers.add(customer);
+
+            System.out.print("Do you want to enter another customer? (yes/no): ");
+            continueEntry = scanner.nextLine();
+        } while (continueEntry.equalsIgnoreCase("yes"));
+
+        // Display all customers' and their accounts' information
+        System.out.println("\nCustomer and Account Information:");
+        System.out.println("-------------------------------------------------");
+        for (Customer cust : customers) {
+            System.out.println(cust);
+            System.out.println("-------------------------------------------------");
+        }
+    }
+}
