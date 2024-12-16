@@ -263,7 +263,7 @@ public class BankAcctApp {
 
 
 
-correct 
+Fix the errors listed from the code below for phase 3.
 
 package courseProject;
 
@@ -370,6 +370,8 @@ public class BankAcctApp {
      }
  }
 }
+
+Errors
 
 Exception in thread "main" java.lang.Error: Unresolved compilation problems: 
 	account cannot be resolved to a variable
