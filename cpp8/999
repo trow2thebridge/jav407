@@ -255,3 +255,82 @@ public class CLIApp {
 Checking Account Final Balance: 467.50
 Savings account balance cannot be negative.
 
+
+
+package courseProject;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class BankAcctApp {
+    public static void main(String[] args) {
+        // Date formatter for output
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // Create Checking and Savings Accounts
+        CheckingAccount checkingAccount = new CheckingAccount();
+        checkingAccount.setAccountNumber("12345");
+        checkingAccount.deposit(1000, new Date());
+        SavingsAccount savingsAccount = new SavingsAccount();
+        savingsAccount.setAccountNumber("67890");
+        savingsAccount.deposit(1000, new Date());
+
+        // Perform Transactions and Log Details
+        performTransaction(checkingAccount, "Deposit", 1000, dateFormat);
+        performTransaction(checkingAccount, "Withdraw", 500, dateFormat);
+        performTransaction(checkingAccount, "Withdraw", 501, dateFormat);
+        performTransaction(checkingAccount, "Deposit", 500, dateFormat);
+        addInterest(checkingAccount, dateFormat);
+
+        performTransaction(savingsAccount, "Deposit", 1000, dateFormat);
+        performTransaction(savingsAccount, "Withdraw", 500, dateFormat);
+        performTransaction(savingsAccount, "Withdraw", 501, dateFormat);
+        performTransaction(savingsAccount, "Deposit", 500, dateFormat);
+        addInterest(savingsAccount, dateFormat);
+
+        System.out.println("\n--- Final Account Balances ---");
+        System.out.println(checkingAccount);
+        System.out.println(savingsAccount);
+    }
+
+    private static void performTransaction(Account account, String transactionType, double amount, SimpleDateFormat dateFormat) {
+        try {
+            Date transactionDate = new Date();
+            if ("Deposit".equalsIgnoreCase(transactionType)) {
+                account.deposit(amount, transactionDate);
+                System.out.printf(
+                        "Transaction Successful: %s\nCustomer ID: %s | Account Number: %s | Type: %s | Date: %s | Amount: %.2f | Service Fee: %.2f | New Balance: %.2f\n\n",
+                        transactionType, "N/A", account.getAccountNumber(), account.getAccountType(),
+                        dateFormat.format(transactionDate), amount, account.serviceFee, account.getBalance());
+            } else if ("Withdraw".equalsIgnoreCase(transactionType)) {
+                account.withdrawal(amount, transactionDate);
+                System.out.printf(
+                        "Transaction Successful: %s\nCustomer ID: %s | Account Number: %s | Type: %s | Date: %s | Amount: %.2f | Service Fee: %.2f | New Balance: %.2f\n\n",
+                        transactionType, "N/A", account.getAccountNumber(), account.getAccountType(),
+                        dateFormat.format(transactionDate), amount, account.serviceFee, account.getBalance());
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.printf(
+                    "Transaction Failed: %s\nCustomer ID: %s | Account Number: %s | Type: %s | Reason: %s\n\n",
+                    transactionType, "N/A", account.getAccountNumber(), account.getAccountType(), e.getMessage());
+        }
+    }
+
+    private static void addInterest(Account account, SimpleDateFormat dateFormat) {
+        try {
+            double interestRate = account.interestRate / 100.0;
+            double interestEarned = account.getBalance() * interestRate;
+            account.deposit(interestEarned, new Date());
+            System.out.printf(
+                    "Interest Added\nCustomer ID: %s | Account Number: %s | Type: %s | Interest Rate: %.2f%% | Interest Earned: %.2f | New Balance: %.2f\n\n",
+                    "N/A", account.getAccountNumber(), account.getAccountType(), account.interestRate, interestEarned,
+                    account.getBalance());
+        } catch (IllegalArgumentException e) {
+            System.out.printf(
+                    "Interest Calculation Failed\nCustomer ID: %s | Account Number: %s | Type: %s | Reason: %s\n\n",
+                    "N/A", account.getAccountNumber(), account.getAccountType(), e.getMessage());
+        }
+    }
+}
+
+
