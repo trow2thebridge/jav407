@@ -370,3 +370,15 @@ public class BankAcctApp {
      }
  }
 }
+
+Exception in thread "main" java.lang.Error: Unresolved compilation problems: 
+	account cannot be resolved to a variable
+	account cannot be resolved to a variable
+	account cannot be resolved
+	account cannot be resolved
+	account cannot be resolved
+	The exception NumberFormatException is already caught by the alternative IllegalArgumentException
+	account cannot be resolved
+	The exception NumberFormatException is already caught by the alternative IllegalArgumentException
+
+	at courseProject/courseProject.BankAcctApp.main(BankAcctApp.java:51)
